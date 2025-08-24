@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Dashboard • AgriLink</title>
+  <meta name="theme-color" content="#0a7d47">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="container row">
+      <a class="brand" href="./index.html">🌿 AgriLink</a>
+      <div style="display:flex;gap:8px">
+        <span id="whoami" class="muted"></span>
+        <a class="btn" href="#" id="logoutBtn">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>Dashboard</h2>
+    <p class="muted">Add your farm products (stored locally for demo; later we connect PHP/MySQL).</p>
+
+    <div class="card">
+      <h3>New Product</h3>
+      <form id="productForm" class="auth-card" style="box-shadow:none;border:none;padding:0;max-width:none">
+        <input id="pName" type="text" placeholder="Product name (e.g., Tomatoes)" required>
+        <textarea id="pDesc" rows="3" placeholder="Short description"></textarea>
+        <input id="pPrice" type="number" min="0" step="0.01" placeholder="Price (GHS)" required>
+        <input id="pImage" type="file" accept="image/*">
+        <button type="submit">Add Product</button>
+      </form>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3>My Products</h3>
+      <table class="table">
+        <thead><tr><th>Image</th><th>Name</th><th>Price (GHS)</th><th>Description</th><th>Action</th></tr></thead>
+        <tbody id="productsTbody"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <div id="toast" class="toast"></div>
+  <script src="./main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Register • AgriLink</title>
+  <meta name="theme-color" content="#0a7d47">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body class="auth-page">
+  <div class="auth-card">
+    <h1>Create Account</h1>
+    <form id="regForm">
+      <input id="fullName" type="text" placeholder="Full Name" required>
+      <input id="email" type="email" placeholder="Email" required>
+      <input id="phone" type="tel" placeholder="Phone Number" required>
+      <input id="password" type="password" placeholder="Password" required>
+      <select id="role" required>
+        <option value="">Choose role</option>
+        <option value="farmer">Farmer</option>
+        <option value="buyer">Buyer</option>
+      </select>
+      <button type="submit">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="./login.html">Login here</a></p>
+  </div>
+  <script src="./main.js" defer></script>
+</body>
+</html>
