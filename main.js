@@ -13,11 +13,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   const loginForm=document.getElementById('loginForm');
   if(loginForm){loginForm.addEventListener('submit',e=>{e.preventDefault();const email=loginEmail.value.trim().toLowerCase(),pass=loginPassword.value;const user=getUsers().find(u=>u.email===email&&u.password===pass);if(!user){toast('Invalid credentials');return}setAuth({name:user.name,email:user.email,role:user.role});toast('Welcome '+user.name.split(' ')[0]);setTimeout(()=>location.href='./dashboard.html',600)})}
   if(location.pathname.endsWith('dashboard.html')){const me=ensureAuth(true);const who=document.getElementById('whoami');if(me&&who){who.textContent=me.name+' • '+me.role.toUpperCase()}const logoutBtn=document.getElementById('logoutBtn');logoutBtn?.addEventListener('click',e=>{e.preventDefault();localStorage.removeItem(LS_AUTH);location.href='./index.html'});const tbody=document.getElementById('productsTbody');const form=document.getElementById('productForm');function loadP(){try{return JSON.parse(localStorage.getItem(LS_PRODUCTS))||[]}catch(e){return []}}function saveP(l){localStorage.setItem(LS_PRODUCTS,JSON.stringify(l))}function render(){const list=loadP().filter(p=>p.owner===(me?.email||''));tbody.innerHTML=list.map(p=>`<tr><td>${p.img?`<img src="${p.img}" style="width:80px;height:60px;object-fit:cover;border-radius:8px">`:'-'}</td><td>${p.name}</td><td>${Number(p.price).toFixed(2)}</td><td>${p.desc||''}</td><td><button class="btn" data-del="${p.id}">Delete</button></td></tr>`).join('')||`<tr><td colspan="5" class="muted">No products yet</td></tr>`}tbody?.addEventListener('click',e=>{const id=e.target?.getAttribute?.('data-del');if(!id)return;const list=loadP().filter(p=>p.id!==id);saveP(list);render();toast('Deleted')});form?.addEventListener('submit',async e=>{e.preventDefault();const name=pName.value.trim(),desc=pDesc.value.trim(),price=pPrice.value,file=pImage.files[0];let img='';if(file){img=await new Promise(res=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.readAsDataURL(file)})}const product={id:String(Date.now()),owner:me.email,name,desc,price,img};const all=loadP();all.unshift(product);saveP(all);form.reset();render();toast('Product added')});render()}
-});
 
-// ================== LANGUAGE SUPPORT ==================
-
-// Dictionary
+// Dictionary for translations
 const translations = {
   en: {
     welcome: "Welcome to AgriLink",
@@ -30,9 +27,7 @@ const translations = {
     onboardingDesc: "Register and manage listings quickly.",
     getStarted: "Get Started",
     already: "I already have an account",
-    footer: "Pilot build for your supervisor",
-    login: "Login",
-    register: "Register"
+    footer: "Pilot build for your supervisor"
   },
   tw: {
     welcome: "Akwaaba kɔ AgriLink",
@@ -45,58 +40,32 @@ const translations = {
     onboardingDesc: "Kyerɛw wo din na hwɛ wo nneɛma ntɔn ntɛm.",
     getStarted: "Hyɛ ase",
     already: "Me wɔ akawnt dada",
-    footer: "Ɔsom boɔma wo supervisor",
-    login: "Kɔ mu",
-    register: "Kyerɛw wo din"
+    footer: "Ɔsom boɔma wo supervisor"
   }
 };
 
-// Switcher function
+// Function to switch languages
 function switchLanguage(lang) {
-  localStorage.setItem("agrilink_lang", lang); // remember choice
-
-  // Home page texts
-  if (document.querySelector("h1")) {
-    document.querySelector("h1").innerText = translations[lang].welcome;
-  }
-  if (document.querySelector(".hero p.muted")) {
-    document.querySelector(".hero p.muted").innerText = translations[lang].desc;
-  }
+  document.querySelector("h1").innerText = translations[lang].welcome;
+  document.querySelector(".hero p.muted").innerText = translations[lang].desc;
 
   // Cards
   const cards = document.querySelectorAll(".card");
-  if (cards.length >= 3) {
-    cards[0].querySelector("strong").innerText = translations[lang].local;
-    cards[0].querySelector("p").innerText = translations[lang].localDesc;
-    cards[1].querySelector("strong").innerText = translations[lang].pwa;
-    cards[1].querySelector("p").innerText = translations[lang].pwaDesc;
-    cards[2].querySelector("strong").innerText = translations[lang].onboarding;
-    cards[2].querySelector("p").innerText = translations[lang].onboardingDesc;
-  }
+  cards[0].querySelector("strong").innerText = translations[lang].local;
+  cards[0].querySelector("p").innerText = translations[lang].localDesc;
+  cards[1].querySelector("strong").innerText = translations[lang].pwa;
+  cards[1].querySelector("p").innerText = translations[lang].pwaDesc;
+  cards[2].querySelector("strong").innerText = translations[lang].onboarding;
+  cards[2].querySelector("p").innerText = translations[lang].onboardingDesc;
 
   // Buttons
   const buttons = document.querySelectorAll(".hero a");
-  if (buttons.length >= 2) {
-    buttons[0].innerText = translations[lang].getStarted;
-    buttons[1].innerText = translations[lang].already;
-  }
-
-  // Navbar (login/register buttons)
-  const loginBtn = document.querySelector("a[href='./login.html']");
-  const regBtn = document.querySelector("a[href='./register.html']");
-  if (loginBtn) loginBtn.innerText = translations[lang].login;
-  if (regBtn) regBtn.innerText = translations[lang].register;
+  buttons[0].innerText = translations[lang].getStarted;
+  buttons[1].innerText = translations[lang].already;
 
   // Footer
-  if (document.querySelector(".footer p")) {
-    document.querySelector(".footer p").innerText = translations[lang].footer;
-  }
+  document.querySelector(".footer p").innerText = translations[lang].footer;
 }
 
-// Load saved language automatically
-document.addEventListener("DOMContentLoaded", () => {
-  const savedLang = localStorage.getItem("agrilink_lang") || "en";
-  const selector = document.getElementById("languageSelector");
-  if (selector) selector.value = savedLang;
-  switchLanguage(savedLang);
 });
+
